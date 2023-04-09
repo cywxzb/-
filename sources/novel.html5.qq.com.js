@@ -1,14 +1,15 @@
-//转换更新时间 时间戳
+//转换时间戳
 function timestampToTime(timestamp) {
-  if(timestamp.toString().length == 13) var date = new Date(timestamp);
-  else var date = new Date(timestamp * 1000);
-  var Y = date.getFullYear() + '-';
-  var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1):date.getMonth()+1) + '-';
-  var D = (date.getDate()< 10 ? '0'+date.getDate():date.getDate())+ ' ';
-  var h = (date.getHours() < 10 ? '0'+date.getHours():date.getHours())+ ':';
-  var m = (date.getMinutes() < 10 ? '0'+date.getMinutes():date.getMinutes()) + ':';
-  var s = date.getSeconds() < 10 ? '0'+date.getSeconds():date.getSeconds();
-  return Y+M+D+h+m+s;
+    let date
+    if (timestamp.length == 13) date = new Date(timestamp);
+    else date = new Date(timestamp * 1000);
+    let Y = date.getFullYear() + '-';
+    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+    let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+    let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+    let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+    return Y + M + D + h + m + s;
 }
 
 //搜索
@@ -71,7 +72,7 @@ const chapter = (url) => {
     Scene: "chapter",
     ReaderVersion: 2008
   })
-  let response = POST("https://novel.html5.qq.com/be-api/content/ads-read",{data,headers:["Q-GUID:4bbcbac89f9b53a1fb75aa860a8188cb","QIMEI36:a2ba4d218c43293e3ce031f510001ef17111"]})
+  let response = POST("https://novel.html5.qq.com/be-api/content/ads-read",{data,headers:["Q-GUID:33db0bf38d6e0427ec54339308fc88cb","QIMEI36:d99603dddd28d412febcd6b9100016c17319","Q-UA:ADRQBX123_GA/1235574&X5MTT_3/&ADR&6814114& Mi13 &73820&16261&Android13 &V3","Q-UA2:QV=3&PL=ADR&PR=QB&PP=com.tencent.mtt&PPVN=12.3.5.5574&TBSVC=45001&CO=BK&COVC=030000&PB=GE&VE=GA&DE=PHONE&CHID=73820&LCID=16261&MO= Mi13 &RL=1080*2250&OS=13&API=33&DS=64&RT=32&REF=qb_0&TM=00"]})
   let $ = JSON.parse(response)
   return $.data.Content[0].Content
 }
@@ -79,5 +80,5 @@ const chapter = (url) => {
 var bookSource = JSON.stringify({
   name: "QQ浏览器免费小说",
   url: "novel.html5.qq.com",
-  version: 104
+  version: 105
 })
