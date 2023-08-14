@@ -45,7 +45,7 @@ const catalog = (url) => {
       a = $('a').attr('href').replace(/\/reader\//,"")  
       array.push({
         name: $('a').text(),
-			   	url: `http://list.fqapi.jilulu.cn/random#/content?item_id=${a}`,
+			   	url: `http://list.fqapi.jilulu.cn/content?item_id=${a}`,
       })
     }
   })
@@ -53,16 +53,9 @@ const catalog = (url) => {
 }
 
 //章节
-const chapter = (url) => {
-    u = GET(url)
-    ur = url.split("#")[1]
-    if (u.includes("list.fqapi.jilulu.cn"))
-  url = u + ur
-else
-  url =  `http://list.fqapi.jilulu.cn` + ur
+const const chapter = (url) => {
      return JSON.parse(GET(url)).data.data.content
 }
-
 const rank = (title, category, page) => {
     
   let response = GET(`http://list.fqapi.jilulu.cn/reading/bookapi/new_category/landing/v/?category_id=${category}&offset=${page*10}&${title}&sub_category_id=&genre_type=0&limit=10&source=front_category&front_page_selected_category=&no_need_all_tag=true&query_gender=1`)
