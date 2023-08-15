@@ -55,7 +55,7 @@ array.push({ name: booklet.name })
 booklet.list.forEach((chapter) => {
 array.push({
 name: decrypt(chapter.name),
-url: `${parseInt(url/1000) + 1}/${url}/${chapter.id}`
+url: `${url}/${chapter.id}`
 })
 })
 })
@@ -64,9 +64,13 @@ return JSON.stringify(array)
 
 //章节
 const chapter = (url) => {
-let response = GET(`https://contentxs232.pysmei.com/BookFiles/Html/${url}.html`)
-let $ = JSON.parse(response).data
-return decrypt($.content.replaceAll("你正在使用的App我们将不再提供最新内容，请到https://www.biqugeapp.com/下载我们最新的App，如有不便，敬请见谅。","")).replaceAll("@@﻿@@","").replaceAll("@@","").replaceAll("@@@@","").replaceAll("正在更新中，请稍等片刻，内容更新后，重新进来即可获取最新章节！亲，如果觉得APP不错，别忘了点右上角的分享给您好友哦！","").replaceAll("内容正在手打中，请在10-30分后重新进入阅读，如果还是没有正常内容，请点击右上角的问题反馈，我们会第一时间处理！","").trim()
+let response = GET(`https://novel-api.elklk.cn/cdn/book/content/${url}.html`)
+let result = JSON.parse(response).result.info.content
+if(result.indexOf("{{{}}}")>(-1)){
+result =result.replace(/.*?{{{}}}/g,"")
+result = decrypt(result)
+}
+return result
 }
 
 var bookSource = JSON.stringify({
