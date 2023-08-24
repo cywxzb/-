@@ -54,7 +54,7 @@ return JSON.stringify(array)
 
 //章节
 const chapter = (url) => {
-     return JSON.parse(GET(url)).data.data.content
+     return JSON.parse(GET(url)).data.content
 }
 const rank = (title, category, page) => {
 
