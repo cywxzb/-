@@ -128,7 +128,7 @@ categories: catagoryAll
 
 
 var bookSource = JSON.stringify({
-name: "番茄小说官方",
+name: "番茄小说",
 url: "fanqienovel.com",
 version: 114
 })
