@@ -64,9 +64,10 @@ return JSON.stringify(array)
 
 //章节
 const chapter = (url) => {
-  let response = GET(url)
-let $ = HTML.parse(JSON.parse(response).data.content)
-return $("article").remove("title,link,h2")
+     let data = JSON.parse(GET(url)).data;
+   if(data.hasOwnProperty("data"))
+       return data.data.content.replace(/<div.*?<\/div>/,"")
+     return data.content.replace(/<div.*?<\/div>/,"")
 }
 
 const rank = (title, category, page) => {
