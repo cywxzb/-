@@ -52,13 +52,10 @@ return JSON.stringify(array)
 
 //章节
 const chapter = (url) => {
-u = GET(url)
-ur = url.split("#")[1]
-if (u.includes("api-fanqienovel.sunianyun.live"))
-url = u + ur
-else
-url = `http://api.api-fanqienovel.sunianyun.live` + ur
-return JSON.parse(GET(url)).data.data.content
+ let data = JSON.parse(GET(url)).data;
+   if(data.hasOwnProperty("data"))
+       return data.data.content;
+     return data.content
 }
 
 var bookSource = JSON.stringify({
