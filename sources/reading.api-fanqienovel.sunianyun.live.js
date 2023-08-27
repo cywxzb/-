@@ -54,13 +54,10 @@ return JSON.stringify(array)
 
 //章节
 const chapter = (url) => {
-u = GET(url)
-ur = url.split("#")[1]
-if (u.includes("reading.api-fanqienovel.sunianyun.live"))
-url = u + ur
-else
-url = `http://reading.api-fanqienovel.sunianyun.live` + ur
-return JSON.parse(GET(url)).data.content
+ let data = JSON.parse(GET(url)).data;
+   if(data.hasOwnProperty("data"))
+       return data.data.content;
+     return data.content
 }
 
 const rank = (title, category, page) => {
