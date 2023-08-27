@@ -1,5 +1,5 @@
 const search = (key) => {
-let response = GET(`http://reading.api-fanqienovel.sunianyun.live/search?query=${key}`)
+let response = GET(`http://list.fqapi.406np.xyz/search?query=${key}`)
 let $ = JSON.parse(response).data.search_tabs[0].data
 let array = []
 let data = $.filter(item => item.book_data)
@@ -45,7 +45,7 @@ array.push({ name: $('div.volume').text().replace(/共.*章/g,"") })
 a = $('a').attr('href').replace(/\/reader\//,"")
 array.push({
 name: $('a').text(),
-url: `http://reading.api-fanqienovel.sunianyun.live/random#/content?item_id=${a}`,
+url: `http://list.fqapi.406np.xyz/content?item_id=${a}`,
 })
 }
 })
@@ -54,15 +54,15 @@ return JSON.stringify(array)
 
 //章节
 const chapter = (url) => {
- let data = JSON.parse(GET(url)).data;
-   if(data.hasOwnProperty("data"))
-       return data.data.content;
-     return data.content
+let data = JSON.parse(GET(url)).data;
+if(data.hasOwnProperty("data"))
+return data.data.content;
+return data.content
 }
 
 const rank = (title, category, page) => {
 
-let response = GET(`http://reading.api-fanqienovel.sunianyun.live/reading/bookapi/new_category/landing/v/?category_id=${category}&offset=${page*10}&${title}&sub_category_id=&genre_type=0&limit=10&source=front_category&front_page_selected_category=&no_need_all_tag=true&query_gender=1`)
+let response = GET(`http://list.fqapi.406np.xyz/reading/bookapi/new_category/landing/v/?category_id=${category}&offset=${page*10}&${title}&sub_category_id=&genre_type=0&limit=10&source=front_category&front_page_selected_category=&no_need_all_tag=true&query_gender=1`)
 let $ = JSON.parse(response).data.data.book_info
 let books = []
 $.forEach((item) => {
@@ -118,7 +118,7 @@ categories: catagoryAll
 
 var bookSource = JSON.stringify({
 name: "鲸落番茄小说(共享节点二)",
-url: "reading.api-fanqienovel.sunianyun.live",
+url: "list.fqapi.406np.xyz",
 version: 111,
 ranks:ranks
 })
