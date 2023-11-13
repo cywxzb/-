@@ -117,7 +117,7 @@ categories: catagoryAll
 
 var bookSource = JSON.stringify({
 name: "鲸落番茄小说(共享节点一)",
-url: "list.fqapi.jilulu.cn",
+url: "list.jingluofq.jilulu.cn",
 version: 111,
 ranks:ranks
 })
