@@ -41,7 +41,7 @@ let array = []
 $('.volume,.chapter-item').forEach((chapter) => {
 let $ = HTML.parse(chapter)
 if ($('div.volume').text().length != 0) {
-array.push({ name: '📖[' + $('div.volume').text().replace(/共.*章/g, "") + ']📖' })
+array.push({ name:  $('div.volume').text().replace(/共.*章/g, "")  })
 } else {
 a = $('a').attr('href').replace(/\/reader\//, "")
 array.push({
