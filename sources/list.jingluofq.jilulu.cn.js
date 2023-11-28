@@ -1,31 +1,4 @@
-const search = (key) => {
-let response = GET(`http://list.jingluofq.jilulu.cn/search?query=${key}`)
-let $ = JSON.parse(response).data.search_tabs[0].data
-let array = []
-let data = $.filter(item => item.book_data)
-data.forEach((child) => {
-array.push({
-name: child.book_data[0].book_name,
-author: child.book_data[0].author,
-cover: child.book_data[0].thumb_url,
-detail: child.book_data[0].book_id,
-category: child.book_data[0].category,
-summary: child.book_data[0].abstract,
-status: child.book_data[0].creation_status == 1 ? '连载' : '完结'
-})
-})
 
-return JSON.stringify(array)
-}
-
-const detail = (url) => {
-let response = GET(`https://novel.snssdk.com/api/novel/book/directory/list/v1?book_id=${url}`)
-let $ = JSON.parse(response).data.book_info
-let book = {
-
-summary: $.abstract,
-status: $.creation_status == 1 ? '连载' : '完结',
-category: $.category,
 words: $.word_number,
 lastChapter: $.last_chapter_title,
 catalog: $.book_id
