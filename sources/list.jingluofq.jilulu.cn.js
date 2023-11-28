@@ -1,4 +1,30 @@
+const search = (key) => {
+let response = GET(`http://list.jingluofq.jilulu.cn/search?query=${key}`)
+let $ = JSON.parse(response).data.search_tabs[0].data
+let array = []
+let data = $.filter(item => item.book_data)
+data.forEach((child) => {
+array.push({
+name: child.book_data[0].book_name,
+author: child.book_data[0].author,
+cover: child.book_data[0].thumb_url,
+detail: child.book_data[0].book_id,
+category: child.book_data[0].category,
+summary: child.book_data[0].abstract,
+status: child.book_data[0].creation_status == 1 ? '连载' : '完结'
+})
+})
 
+return JSON.stringify(array)
+}
+
+const detail = (url) => {
+let response = GET(`https://api5-normal-sinfonlineb.fqnovel.com/reading/bookapi/multi-detail/v/?aid=1967&iid=1&version_code=999&book_id=${url}`)
+let $ = JSON.parse(response).data[0]
+let book = {
+summary: $.abstract,
+status: $.creation_status == 1 ? '连载' : '完结',
+category: $.category,
 words: $.word_number,
 lastChapter: $.last_chapter_title,
 catalog: $.book_id
@@ -14,7 +40,7 @@ let array = []
 $('.volume,.chapter-item').forEach((chapter) => {
 let $ = HTML.parse(chapter)
 if ($('div.volume').text().length != 0) {
-array.push({ name:  $('div.volume').text().replace(/共.*章/g, "")  })
+array.push({ name: $('div.volume').text().replace(/共.*章/g, "") })
 } else {
 a = $('a').attr('href').replace(/\/reader\//, "")
 array.push({
@@ -30,13 +56,25 @@ bookId: url
 return JSON.stringify(array)
 }
 
+// list.jingluofq.jilulu.cn
 
+
+// api5-normal-sinfonlinea.fqnovel.com
 const COMMENT_URL = "https://api5-normal-sinfonlinea.fqnovel.com/reading/ugc/idea/list/v/?aid=1967&item_id=${chapterId}&book_id=${bookId}&item_version=1"
-
-function getCommentIds (bookId, chapterId) {
+/**
+* 请求章节评论信息数据;
+* @param {*} bookId 由方法{search} 返回的 detail
+* @param {*} chapterId 由方法{catalog} 返回的 url
+* @param {*} sb 由方法{chapter} 返回的 comment 中的 url
+* @returns
+* {
+* 段落索引: {评论数量, id}
+* }
+*/
+function getCommentIds (bookId, chapterId, sb) {
 let commentUrl = COMMENT_URL
 .replace("${bookId}", bookId)
-.replace("${chapterId}", chapterId);
+.replace("${chapterId}", JSON.parse(chapterId).chapterId);
 
 let res = GET(commentUrl);
 let data = JSON.parse(res).data.idea_data;
@@ -47,8 +85,8 @@ count: data[key].idea_count + "",
 id : key
 }
 }
-LOGE (json);
-return json;
+//LOGE (json);
+return JSON.stringify(json);
 }
 
 //章节
@@ -67,22 +105,7 @@ else
 url = `http://list.jingluofq.jilulu.cn` + ur
 
 data = JSON.parse(GET(url)).data;
-// 获得本章节评论数组; 评论不强求, 有异常就跳过;
-let comments = {}
-try {
-comments = getCommentIds (bookId, chapterId)
-} catch(err) { }
 
-let res = {}
-if (Object.keys(comments).length > 0) {
-res.comments = comments;
-}
-/*
-if (data.hasOwnProperty("data"))
-res.content = data.data.content;
-else
-res.content = data.content;
-*/
 let content = ""
 if (data.hasOwnProperty("data"))
 content = data.data.content;
@@ -92,8 +115,10 @@ content = data.content;
 content = content.replaceAll("img-width", "width")
 content = content.replaceAll("img-height", "height")
 
-res.content = content
-return content
+return JSON.stringify({
+content : content,
+comments: { url: {bid: bookId, cid: chapterId}, method: "getCommentIds" }
+});
 }
 
 function fuckDate (date) {
@@ -187,8 +212,6 @@ disagree : reply.disagree_count
 }
 data.replys = reply_list;
 }
-} else {
-// LOGE ("ERROR: " + JSON.stringify(item))
 }
 }
 return JSON.stringify(array);
@@ -259,7 +282,17 @@ categories: catagoryAll
 
 var bookSource = JSON.stringify({
 name: "Fun番茄",
-url: "list.jinglulu.cn",
+url: "list.jingluofq.jilulu.cn",
 version: 111,
-ranks: ranks
+ranks: ranks,
+
+// 5个线程同时缓存;
+threadCount: 5,
+
+// 每条线程请求完毕后, 都阻塞500ms;
+threadSleep: 500,
+
+// 缓存评论超时时长( 不是说请求超时, 而是有效期, 评论数据会被缓存到手机上, 当此文件超过timeout时长之后, 会请求新的评论数据 )
+// 单位是秒;
+commentTimeout: 60 * 60 * 2
 })
