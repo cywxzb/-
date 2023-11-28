@@ -115,10 +115,7 @@ content = data.content;
 content = content.replaceAll("img-width", "width")
 content = content.replaceAll("img-height", "height")
 
-return JSON.stringify({
-content : content,
-comments: { url: {bid: bookId, cid: chapterId}, method: "getCommentIds" }
-});
+return content
 }
 
 function fuckDate (date) {
