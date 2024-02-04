@@ -69,7 +69,7 @@ const catalog = (url) => {
 		if(JSON.stringify(v).indexOf(V)==-1){
 				v.push(V)
 				list.push({
-						name: '📖['+V+']📖'
+						name: '+V+'
 					});
 			}
 		 list.push({
