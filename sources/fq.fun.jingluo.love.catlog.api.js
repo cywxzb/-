@@ -10,7 +10,7 @@ function timestampToTime(timestamp) {
 }
 
 const search = (key) => {
-	let response = GET(`http://list.jingluofq.jilulu.cn/search?query=${key}`)
+	let response = GET(`http://fq.fun.jingluo.love/search?query=${key}`)
 	let $ = JSON.parse(response).data.search_tabs[0].data
 	let array = []
 	let data = $.filter(item => item.book_data)
@@ -74,7 +74,7 @@ const catalog = (url) => {
 			}
 		 list.push({
 				name: $.name,
-			 url: `http://list.jingluofq.jilulu.cn/random#/content?item_id=${$.id}`
+			 url: `http://fq.fun.jingluo.love/random#/content?item_id=${$.id}`
 			})
 	})
     return JSON.stringify(list)
@@ -83,10 +83,10 @@ const catalog = (url) => {
 const chapter = (url) => {
   let u = GET(url)
   let	ur = url.split("#")[1]
- 	if (u.includes("list.jingluofq.jilulu.cn"))
+ 	if (u.includes("fq.fun.jingluo.love"))
 		url = u + ur
 	else
-		url = `http://list.jingluofq.jilulu.cn` + ur
+		url = `http://fq.fun.jingluo.love` + ur
 	
 	data = JSON.parse(GET(url)).data
 
@@ -99,7 +99,7 @@ const chapter = (url) => {
 
 const rank = (title, category, page) => {
 
-	let response = GET(`http://list.jingluofq.jilulu.cn/reading/bookapi/new_category/landing/v/?category_id=${category}&offset=${page * 10}&${title}&sub_category_id=&genre_type=0&limit=10&source=front_category&front_page_selected_category=&no_need_all_tag=true&query_gender=1`)
+	let response = GET(`http://fq.fun.jingluo.love/reading/bookapi/new_category/landing/v/?category_id=${category}&offset=${page * 10}&${title}&sub_category_id=&genre_type=0&limit=10&source=front_category&front_page_selected_category=&no_need_all_tag=true&query_gender=1`)
 	let json = JSON.parse(response).data
 
 	let data = []
@@ -163,7 +163,7 @@ const ranks = [
 
 var bookSource = JSON.stringify({
 	name: "Fun番茄(接口目录)",
-	url: "list.jingluofq.jilulu.cn.catlog.api",
+	url: "fq.fun.jingluo.love.catlog.api",
 	ranks: ranks,
     version: 103        
 })
